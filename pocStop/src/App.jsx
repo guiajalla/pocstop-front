@@ -5,7 +5,7 @@ import { css } from '@emotion/react'
 
 const AppStyles = css`
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
 `
 
 const App = () => {

@@ -6,25 +6,23 @@ import { Button } from '../button'
 const headerContainer = css`
     display: flex;
     justify-content: space-between;
-
-    width: 100%;
-    height: 100%;
-    padding: 3rem;
     background-color: PaleGreen;
-
+    box-shadow: 0px 5px 1rem lightblue;
     img {
-        height: 10rem;
+        margin-left: 1rem;
+        height: 5rem;
     }
     `
-const headerButton = css`
+const headerButtons = css`
     display: flex;
+    margin-right: 1rem;
 `
 
 export const Header = () => {
     return (
         <div css={headerContainer}>
             <img src='../../../public\pride.svg' alt='bandeira LGBTQIAPN+'/>
-            <div css={headerButton}>
+            <div css={headerButtons}>
                 <Button text={'Avalie Locais'}/>
                 <Button text={'Dashboard'}/>
                 <Button text={'Sign Up'}/>
