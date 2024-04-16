@@ -21,7 +21,7 @@ const headerButtons = css`
 export const Header = () => {
     return (
         <div css={headerContainer}>
-            <img src='../../../public\pride.svg' alt='bandeira LGBTQIAPN+'/>
+            <img src='../../../pride.svg' alt='bandeira LGBTQIAPN+'/>
             <div css={headerButtons}>
                 <Button text={'Avalie Locais'}/>
                 <Button text={'Dashboard'}/>
