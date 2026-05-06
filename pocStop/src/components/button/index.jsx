@@ -1,20 +1,19 @@
-import React, { useCallback }  from "react"
+import React from 'react'
 import { css } from '@emotion/react'
 
 const buttonStyles = css`
-    &:hover {
-        color: white;
-    }
-    background-color: transparent;
-    border: none;
+  &:hover {
+    color: white;
+  }
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 `
 
-export const Button = ({text}) => {
-    const onClick = useCallback(() => {
-        console.log("Vite + React + TypeScript + Tailwind = ❤️");
-      }, []);
-      
-    return (
-        <button css={buttonStyles} onClick={onClick}>{text}</button>
-    )
+export const Button = ({ text, onClick }) => {
+  return (
+    <button css={buttonStyles} onClick={onClick}>
+      {text}
+    </button>
+  )
 }

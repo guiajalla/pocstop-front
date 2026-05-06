@@ -13,8 +13,12 @@
     "@emotion/babel-plugin": "^11.11.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "aws-amplify": "^6.16.4",
+    "oidc-client-ts": "^3.5.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-oidc-context": "^3.3.1",
+    "react-router-dom": "^7.14.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
