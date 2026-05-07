@@ -7,13 +7,14 @@ import { FeedbackToast } from '../components/establishments/FeedbackToast'
 import { EstablishmentTable } from '../components/establishments/EstablishmentTable'
 import { EstablishmentForm } from '../components/establishments/EstablishmentForm'
 import { criarEstabelecimento } from '../services/api'
+import { useEstabelecimentos } from '../hooks/useEstabelecimentos'
 
 const OBRIGATORIOS = ['nome', 'cidade', 'redeSocial', 'endereco', 'bairro', 'latitude', 'longitude', 'categoriaPrincipal']
 
 export const AdminEstabelecimentosPage = () => {
   const { user } = useAuth()
 
-  const [estabelecimentos] = useState([])
+  const { estabelecimentos, loading, refresh } = useEstabelecimentos()
   const [saving, setSaving] = useState(false)
   const [filtro, setFiltro] = useState('todos')
   const [busca, setBusca] = useState('')
@@ -71,6 +72,7 @@ export const AdminEstabelecimentosPage = () => {
       mostrarFeedback(msgs[status] || 'Salvo.')
       setSelecionado(null)
       setIsNovo(false)
+      refresh()
     } catch (erro) {
       console.error('[salvar] erro da API:', erro)
       mostrarFeedback('Erro ao salvar. Tente novamente.', 'erro')
@@ -124,7 +126,7 @@ export const AdminEstabelecimentosPage = () => {
             listagem={listagem}
             contagem={contagem}
             selecionado={selecionado}
-            loading={false}
+            loading={loading}
             busca={busca}
             filtro={filtro}
             onBusca={setBusca}
