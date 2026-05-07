@@ -1,11 +1,13 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { AdminEstabelecimentosPage } from './pages/EstablishmentsAdmin'
+import { UserProfilePage } from './pages/UserProfilePage'
 import { Header } from './components/header'
 import { Footer } from './components/footer'
 import { Content } from './components/content'
 import { AuthPage } from './pages/AuthPage'
 import { AdminRoute } from './routes/AdminRoute'
+import { UserRoute } from './routes/UserRoute'
 import { css } from '@emotion/react'
 
 const AppStyles = css`
@@ -25,6 +27,16 @@ const App = () => {
             {/* Pública */}
             <Route path="/" element={<Content />} />
             <Route path="/auth" element={<AuthPage />} />
+
+            {/* Perfil do usuário */}
+            <Route
+              path="/perfil"
+              element={
+                <UserRoute>
+                  <UserProfilePage />
+                </UserRoute>
+              }
+            />
 
             {/* Exclusiva admin */}
             <Route

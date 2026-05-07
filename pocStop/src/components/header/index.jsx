@@ -186,6 +186,15 @@ export const Header = () => {
                     <div css={dropdownEmailStyles}>{email}</div>
                   </div>
 
+                  {!isAdmin && (
+                    <>
+                      <button css={dropdownItemStyles} onClick={() => handleNav('/perfil')}>
+                        👤 Meu perfil
+                      </button>
+                      <div css={dropdownDividerStyles} />
+                    </>
+                  )}
+
                   {isAdmin && (
                     <>
                       <button css={dropdownItemStyles} onClick={() => handleNav('/admin/estabelecimentos')}>
