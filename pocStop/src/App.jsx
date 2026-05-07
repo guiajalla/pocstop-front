@@ -4,7 +4,7 @@ import { AdminEstabelecimentosPage } from './pages/EstablishmentsAdmin'
 import { UserProfilePage } from './pages/UserProfilePage'
 import { Header } from './components/header'
 import { Footer } from './components/footer'
-import { Content } from './components/content'
+import { HomePage } from './pages/HomePage'
 import { AuthPage } from './pages/AuthPage'
 import { AdminRoute } from './routes/AdminRoute'
 import { UserRoute } from './routes/UserRoute'
@@ -25,7 +25,7 @@ const App = () => {
           <Header />
           <Routes>
             {/* Pública */}
-            <Route path="/" element={<Content />} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/auth" element={<AuthPage />} />
 
             {/* Perfil do usuário */}
