@@ -35,6 +35,19 @@ export const salvarDadosUsuario = ({ userId, nome, dataNascimento, cidade, gener
 export const buscarDadosUsuario = (userId) =>
   req(`/usuarios/${userId}`, { method: 'GET' })
 
+export const atualizarDadosUsuario = (userId, { nome, dataNascimento, cidade, genero, orientacaoSexual }) =>
+  req(`/usuarios/${userId}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      name:               nome,
+      gender:             genero,
+      city:               cidade,
+      sexual_orientation: orientacaoSexual,
+      birth_date:         dataNascimento,
+      last_update:        new Date().toISOString(),
+    }),
+  })
+
 export const criarEstabelecimento = (payload) =>
   req('/estabelecimentos', {
     method: 'POST',
