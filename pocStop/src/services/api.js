@@ -34,3 +34,9 @@ export const salvarDadosUsuario = ({ userId, nome, dataNascimento, cidade, gener
 
 export const buscarDadosUsuario = (userId) =>
   req(`/usuarios/${userId}`, { method: 'GET' })
+
+export const criarEstabelecimento = (payload) =>
+  req('/estabelecimentos', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
