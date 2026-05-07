@@ -41,6 +41,12 @@ export const criarEstabelecimento = (payload) =>
     body: JSON.stringify(payload),
   })
 
+export const atualizarEstabelecimento = (id, payload) =>
+  req(`/estabelecimentos/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(payload),
+  })
+
 export const listarEstabelecimentos = (status = 'todos') => {
   const qs = status !== 'todos' ? `?status=${status}` : ''
   return req(`/estabelecimentos${qs}`, { method: 'GET' })

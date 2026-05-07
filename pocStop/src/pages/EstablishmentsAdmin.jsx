@@ -6,7 +6,7 @@ import { emptyForm } from '../components/establishments/establishmentConstants'
 import { FeedbackToast } from '../components/establishments/FeedbackToast'
 import { EstablishmentTable } from '../components/establishments/EstablishmentTable'
 import { EstablishmentForm } from '../components/establishments/EstablishmentForm'
-import { criarEstabelecimento } from '../services/api'
+import { criarEstabelecimento, atualizarEstabelecimento } from '../services/api'
 import { useEstabelecimentos } from '../hooks/useEstabelecimentos'
 
 const OBRIGATORIOS = ['nome', 'cidade', 'redeSocial', 'endereco', 'bairro', 'latitude', 'longitude', 'categoriaPrincipal']
@@ -63,10 +63,13 @@ export const AdminEstabelecimentosPage = () => {
         status,
         atualizado_por:       user?.signInDetails?.loginId || user?.username || '',
         updated_at:           agora,
-        created_at:           agora,
       }
 
-      await criarEstabelecimento(payload)
+      if (selecionado?.estabelecimento_id) {
+        await atualizarEstabelecimento(selecionado.estabelecimento_id, payload)
+      } else {
+        await criarEstabelecimento({ ...payload, created_at: agora })
+      }
 
       const msgs = { aprovado: 'Estabelecimento aprovado e publicado!', rascunho: 'Rascunho salvo.', rejeitado: 'Estabelecimento rejeitado.' }
       mostrarFeedback(msgs[status] || 'Salvo.')
