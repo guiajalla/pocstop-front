@@ -2,7 +2,7 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { Amplify } from 'aws-amplify'
 import { signIn, signOut, signUp, confirmSignUp, resendSignUpCode, getCurrentUser, deleteUser } from 'aws-amplify/auth'
-import { buscarDadosUsuario } from '../services/api'
+import { buscarDadosUsuario, atualizarDadosUsuario } from '../services/api'
 
 Amplify.configure({
   Auth: {
@@ -87,6 +87,21 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const atualizarPerfil = async (dados) => {
+    await atualizarDadosUsuario(user.userId, dados)
+    const atualizado = {
+      ...perfil,
+      name:               dados.nome,
+      city:               dados.cidade,
+      gender:             dados.genero,
+      sexual_orientation: dados.orientacaoSexual,
+      birth_date:         dados.dataNascimento,
+      last_update:        new Date().toISOString(),
+    }
+    setPerfil(atualizado)
+    localStorage.setItem('perfil', JSON.stringify(atualizado))
+  }
+
   const logout = async () => {
     await signOut()
     setUser(null)
@@ -98,7 +113,7 @@ export const AuthProvider = ({ children }) => {
   const isAdmin = perfil?.user_type === 'poc_admin'
 
   return (
-    <AuthContext.Provider value={{ user, perfil, loading, isAdmin, login, register, confirm, resendCode, rollbackRegister, logout }}>
+    <AuthContext.Provider value={{ user, perfil, loading, isAdmin, login, register, confirm, resendCode, rollbackRegister, logout, atualizarPerfil }}>
       {children}
     </AuthContext.Provider>
   )
