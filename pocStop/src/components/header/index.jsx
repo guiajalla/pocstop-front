@@ -37,6 +37,19 @@ const btnStyles = css`
   &:hover { color: white; }
 `
 
+const explorarBtnStyles = css`
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  font-family: sans-serif;
+  color: #1a2e1a;
+  transition: background 0.2s;
+  &:hover { background: rgba(0,0,0,0.08); }
+`
+
 const adminBtnStyles = css`
   ${btnStyles};
   font-size: 0.85rem;
@@ -164,15 +177,9 @@ export const Header = () => {
       <img src='../../../pride.svg' alt='bandeira LGBTQIAPN+' onClick={() => navigate('/')} />
 
       <div css={headerButtons}>
+        <button css={explorarBtnStyles} onClick={() => navigate('/')}>Explorar mapa</button>
         {user ? (
           <>
-            {/* Botão de atalho admin no header */}
-            {isAdmin && (
-              <button css={adminBtnStyles} onClick={() => navigate('/admin/estabelecimentos')}>
-                ⚙ Admin
-              </button>
-            )}
-
             {/* Dropdown do usuário */}
             <div css={dropdownWrapperStyles} ref={dropdownRef}>
               <button css={userBtnStyles} onClick={() => setDropdownOpen((o) => !o)}>
