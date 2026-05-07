@@ -40,3 +40,8 @@ export const criarEstabelecimento = (payload) =>
     method: 'POST',
     body: JSON.stringify(payload),
   })
+
+export const listarEstabelecimentos = (status = 'todos') => {
+  const qs = status !== 'todos' ? `?status=${status}` : ''
+  return req(`/estabelecimentos${qs}`, { method: 'GET' })
+}
