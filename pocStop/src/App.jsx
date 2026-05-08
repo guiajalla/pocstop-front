@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { AdminEstabelecimentosPage } from './pages/EstablishmentsAdmin'
 import { UserProfilePage } from './pages/UserProfilePage'
+import { SugestaoEstabelecimentoPage } from './pages/SugestaoEstabelecimentoPage'
 import { Header } from './components/header'
 import { Footer } from './components/footer'
 import { HomePage } from './pages/HomePage'
@@ -34,6 +35,16 @@ const App = () => {
               element={
                 <UserRoute>
                   <UserProfilePage />
+                </UserRoute>
+              }
+            />
+
+            {/* Sugestão de estabelecimento */}
+            <Route
+              path="/sugerir"
+              element={
+                <UserRoute>
+                  <SugestaoEstabelecimentoPage />
                 </UserRoute>
               }
             />

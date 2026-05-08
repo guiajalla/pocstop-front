@@ -4,17 +4,17 @@ export const globalStyles = css`
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg: #f7f9f7;
+    --bg: #F3F8F8;
     --surface: #ffffff;
-    --border: #e0ebe0;
-    --accent: #2d7a2d;
-    --accent-light: #e8f5e8;
-    --text: #1a2e1a;
-    --text-muted: #6b8a6b;
+    --border: #C2DFE0;
+    --accent: #3AAFA9;
+    --accent-light: #E0F5F3;
+    --text: #1A3038;
+    --text-muted: #5A7A80;
     --pending: #b45309;
     --pending-bg: #fef3c7;
-    --approved: #2d7a2d;
-    --approved-bg: #e8f5e8;
+    --approved: #006847;
+    --approved-bg: #E0F5F3;
     --rejected: #b91c1c;
     --rejected-bg: #fee2e2;
     --radius: 6px;
@@ -235,7 +235,7 @@ export const fieldGroupStyles = css`
     appearance: none;
     transition: border-color 0.15s;
     &:focus { border-color: var(--accent); background: white; }
-    &::placeholder { color: #b0c4b0; }
+    &::placeholder { color: #9ABFC2; }
     option { background: white; }
   }
   textarea { resize: vertical; min-height: 60px; }

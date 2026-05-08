@@ -5,7 +5,7 @@ import {
   badgeStyles, btnRejectStyles, btnDraftStyles, btnApproveStyles,
   coordHintStyles, panelStyles, emptyPanelStyles,
 } from './establishmentStyles'
-import { CATEGORIAS, emptyForm } from './establishmentConstants'
+import { CATEGORIAS, ESTADOS_BR, emptyForm } from './establishmentConstants'
 
 export const EstablishmentForm = ({ initialValues, isNovo, selecionado, saving, onSave }) => {
   const [form, setForm] = useState(initialValues ?? emptyForm())
@@ -44,14 +44,22 @@ export const EstablishmentForm = ({ initialValues, isNovo, selecionado, saving, 
       </div>
 
       <div css={formBodyFormStyles}>
+        <div css={fieldGroupStyles}>
+          <label>Nome *</label>
+          <input placeholder="Ex: Café Aurora" value={form.nome} onChange={set('nome')} />
+        </div>
+
         <div css={rowFieldStyles}>
-          <div css={fieldGroupStyles}>
-            <label>Nome *</label>
-            <input placeholder="Ex: Café Aurora" value={form.nome} onChange={set('nome')} />
-          </div>
           <div css={fieldGroupStyles}>
             <label>Cidade *</label>
             <input placeholder="Ex: Porto Alegre" value={form.cidade} onChange={set('cidade')} />
+          </div>
+          <div css={fieldGroupStyles}>
+            <label>Estado *</label>
+            <select value={form.estado} onChange={set('estado')}>
+              <option value="">Selecionar</option>
+              {ESTADOS_BR.map((uf) => <option key={uf} value={uf}>{uf}</option>)}
+            </select>
           </div>
         </div>
 
@@ -141,7 +149,7 @@ export const EstablishmentForm = ({ initialValues, isNovo, selecionado, saving, 
       </div>
 
       <div css={formActionsStyles}>
-        {!isNovo && (
+        {!isNovo && selecionado?.status !== 'aprovado' && (
           <button css={btnRejectStyles} disabled={saving} onClick={() => onSave('rejeitado', form)}>
             Rejeitar
           </button>
