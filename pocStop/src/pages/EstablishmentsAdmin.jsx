@@ -9,7 +9,7 @@ import { EstablishmentForm } from '../components/establishments/EstablishmentFor
 import { criarEstabelecimento, atualizarEstabelecimento } from '../services/api'
 import { useEstabelecimentos } from '../hooks/useEstabelecimentos'
 
-const OBRIGATORIOS = ['nome', 'cidade', 'redeSocial', 'endereco', 'bairro', 'latitude', 'longitude', 'categoriaPrincipal']
+const OBRIGATORIOS = ['nome', 'cidade', 'estado', 'redeSocial', 'endereco', 'bairro', 'latitude', 'longitude', 'categoriaPrincipal']
 
 export const AdminEstabelecimentosPage = () => {
   const { user } = useAuth()
@@ -49,6 +49,7 @@ export const AdminEstabelecimentosPage = () => {
       const payload = {
         nome:                 form.nome,
         cidade:               form.cidade,
+        estado:               form.estado           || '',
         rede_social:          form.redeSocial       || '',
         link_rede_social:     form.linkRedeSocial   || '',
         sugerido_por:         form.sugeridoPor      || user?.signInDetails?.loginId || '',
@@ -86,7 +87,7 @@ export const AdminEstabelecimentosPage = () => {
 
   const listagem = estabelecimentos.filter((e) => {
     const matchFiltro = filtro === 'todos' || e.status === filtro
-    const matchBusca  = !busca || [e.nome, e.cidade, e.sugerido_por].some((v) => v?.toLowerCase().includes(busca.toLowerCase()))
+    const matchBusca  = !busca || [e.nome, e.cidade, e.estado, e.sugerido_por].some((v) => v?.toLowerCase().includes(busca.toLowerCase()))
     return matchFiltro && matchBusca
   })
 
@@ -100,6 +101,7 @@ export const AdminEstabelecimentosPage = () => {
   const initialFormValues = selecionado ? {
     nome:                selecionado.nome || '',
     cidade:              selecionado.cidade || '',
+    estado:              selecionado.estado || '',
     redeSocial:          selecionado.rede_social || '',
     linkRedeSocial:      selecionado.link_rede_social || '',
     sugeridoPor:         selecionado.sugerido_por || '',

@@ -2,7 +2,6 @@ import {
   panelStyles, toolbarStyles, searchStyles, filterBtnStyles,
   tableStyles, thStyles, trStyles, tdStyles, badgeStyles, emptyStyles,
 } from './establishmentStyles'
-
 const FILTROS = ['todos', 'pendente', 'aprovado', 'rejeitado']
 
 const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1)
@@ -12,7 +11,7 @@ export const EstablishmentTable = ({ listagem, contagem, selecionado, loading, b
     <div css={toolbarStyles}>
       <input
         css={searchStyles}
-        placeholder="Buscar por nome, cidade ou usuário..."
+        placeholder="Buscar por nome, cidade, estado ou usuário..."
         value={busca}
         onChange={(e) => onBusca(e.target.value)}
       />
@@ -32,7 +31,7 @@ export const EstablishmentTable = ({ listagem, contagem, selecionado, loading, b
         <thead>
           <tr>
             <th css={thStyles}>Nome do estabelecimento</th>
-            <th css={thStyles}>Cidade</th>
+            <th css={thStyles}>Cidade / Estado</th>
             <th css={thStyles}>Rede social</th>
             <th css={thStyles}>Sugerido por</th>
             <th css={thStyles}>Status</th>
@@ -46,7 +45,7 @@ export const EstablishmentTable = ({ listagem, contagem, selecionado, loading, b
               onClick={() => onSelect(item)}
             >
               <td css={tdStyles} style={{ fontWeight: 500 }}>{item.nome}</td>
-              <td css={tdStyles}>{item.cidade}</td>
+              <td css={tdStyles}>{item.cidade}{item.estado ? `/${item.estado}` : ''}</td>
               <td css={tdStyles} style={{ fontFamily: 'DM Mono, monospace', fontSize: 12 }}>
                 {item.rede_social || '—'}
               </td>
