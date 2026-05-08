@@ -48,6 +48,18 @@ export const atualizarDadosUsuario = (userId, { nome, dataNascimento, cidade, ge
     }),
   })
 
+export const sugerirEstabelecimento = ({ nome, redeSocial, cidade, estado, sugeridoPor }) =>
+  req('/estabelecimentos/sugerir', {
+    method: 'POST',
+    body: JSON.stringify({
+      nome,
+      rede_social: redeSocial,
+      cidade,
+      estado,
+      sugerido_por: sugeridoPor,
+    }),
+  })
+
 export const criarEstabelecimento = (payload) =>
   req('/estabelecimentos', {
     method: 'POST',

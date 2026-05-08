@@ -36,7 +36,7 @@ const baseCard = `
 
 const pageWrap = css`
   flex: 1;
-  background: #f3f5f3;
+  background: #F3F8F8;
   padding: 24px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 `
@@ -94,19 +94,19 @@ const filterBtn = css`
 
 const mapArea = css`
   height: 420px;
-  background: #e2ede2;
+  background: #DCF0EE;
   border-radius: 8px;
   position: relative;
   overflow: hidden;
-  border: 1px solid #cde0cd;
+  border: 1px solid #B8DDE0;
 `
 
 const mapGridOverlay = css`
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(130,180,130,0.35) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(130,180,130,0.35) 1px, transparent 1px);
+    linear-gradient(rgba(58,175,169,0.25) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(58,175,169,0.25) 1px, transparent 1px);
   background-size: 48px 48px;
 `
 
@@ -118,7 +118,7 @@ const mapCenter = css`
   align-items: center;
   justify-content: center;
   gap: 6px;
-  color: #4a7c4a;
+  color: #3AAFA9;
   pointer-events: none;
 `
 
@@ -135,7 +135,7 @@ const destaqueHeader = css`
 const verTodosBtn = css`
   background: none;
   border: none;
-  color: #15803d;
+  color: #3AAFA9;
   font-size: 13px;
   cursor: pointer;
   font-family: inherit;
@@ -225,14 +225,14 @@ const avaliarBtn = css`
   padding: 7px 0;
   border: none;
   border-radius: 7px;
-  background: #15803d;
+  background: #3AAFA9;
   color: white;
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
   font-family: inherit;
   transition: background 0.15s;
-  &:hover { background: #166534; }
+  &:hover { background: #006847; }
 `
 
 // Stats
@@ -261,7 +261,7 @@ const statValue = css`
 
 // CTA
 const ctaSection = css`
-  background: #111827;
+  background: #1E1B4A;
   border-radius: 12px;
   padding: 24px 28px;
   display: flex;
@@ -380,14 +380,14 @@ const textareaStyle = css`
   min-height: 90px;
   box-sizing: border-box;
   color: #111827;
-  &:focus { outline: none; border-color: #15803d; box-shadow: 0 0 0 2px rgba(21,128,61,0.1); }
+  &:focus { outline: none; border-color: #3AAFA9; box-shadow: 0 0 0 2px rgba(58,175,169,0.15); }
 `
 
 const submitBtnStyle = css`
   width: 100%;
   margin-top: 16px;
   padding: 12px;
-  background: #15803d;
+  background: #3AAFA9;
   color: white;
   border: none;
   border-radius: 10px;
@@ -396,7 +396,7 @@ const submitBtnStyle = css`
   cursor: pointer;
   font-family: inherit;
   transition: background 0.15s;
-  &:hover { background: #166534; }
+  &:hover { background: #006847; }
   &:disabled { background: #d1d5db; cursor: default; color: #9ca3af; }
 `
 
@@ -498,12 +498,12 @@ export function HomePage() {
                 viewBox="0 0 400 420"
                 preserveAspectRatio="none"
               >
-                <line x1="0"   y1="140" x2="400" y2="140" stroke="#2d6a2d" strokeWidth="7" />
-                <line x1="0"   y1="280" x2="400" y2="280" stroke="#2d6a2d" strokeWidth="7" />
-                <line x1="120" y1="0"   x2="120" y2="420" stroke="#2d6a2d" strokeWidth="7" />
-                <line x1="280" y1="0"   x2="280" y2="420" stroke="#2d6a2d" strokeWidth="7" />
-                <line x1="0"   y1="210" x2="400" y2="210" stroke="#2d6a2d" strokeWidth="2" />
-                <line x1="200" y1="0"   x2="200" y2="420" stroke="#2d6a2d" strokeWidth="2" />
+                <line x1="0"   y1="140" x2="400" y2="140" stroke="#3AAFA9" strokeWidth="7" />
+                <line x1="0"   y1="280" x2="400" y2="280" stroke="#3AAFA9" strokeWidth="7" />
+                <line x1="120" y1="0"   x2="120" y2="420" stroke="#3AAFA9" strokeWidth="7" />
+                <line x1="280" y1="0"   x2="280" y2="420" stroke="#3AAFA9" strokeWidth="7" />
+                <line x1="0"   y1="210" x2="400" y2="210" stroke="#3AAFA9" strokeWidth="2" />
+                <line x1="200" y1="0"   x2="200" y2="420" stroke="#3AAFA9" strokeWidth="2" />
               </svg>
 
               {/* Pins dos estabelecimentos */}
@@ -516,7 +516,7 @@ export function HomePage() {
                     left: pin.left,
                     width: 18,
                     height: 18,
-                    background: '#15803d',
+                    background: '#3AAFA9',
                     borderRadius: '50% 50% 50% 0',
                     transform: 'rotate(-45deg)',
                     border: '2px solid white',
@@ -587,7 +587,7 @@ export function HomePage() {
             <h2>Sentiu falta de algum local?</h2>
             <p>{ctaSubtitle}</p>
           </div>
-          <button css={ctaButton} onClick={() => { if (!user) navigate('/auth') }}>
+          <button css={ctaButton} onClick={() => navigate(user ? '/sugerir' : '/auth')}>
             Dê sua sugestão
           </button>
         </div>

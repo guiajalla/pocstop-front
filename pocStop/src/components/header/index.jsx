@@ -7,8 +7,8 @@ const headerContainer = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: PaleGreen;
-  box-shadow: 0px 5px 1rem lightblue;
+  background-color: #D4EEF0;
+  box-shadow: 0px 5px 1rem #B3C4E8;
   position: relative;
   z-index: 100;
   img {
@@ -45,7 +45,7 @@ const explorarBtnStyles = css`
   padding: 0.4rem 0.8rem;
   border-radius: 4px;
   font-family: sans-serif;
-  color: #1a2e1a;
+  color: #1A3038;
   transition: background 0.2s;
   &:hover { background: rgba(0,0,0,0.08); }
 `
@@ -54,9 +54,9 @@ const adminBtnStyles = css`
   ${btnStyles};
   font-size: 0.85rem;
   font-weight: 600;
-  color: #2d5a2d;
-  border: 1px solid #2d5a2d;
-  &:hover { background: #2d5a2d; color: white; }
+  color: #2B6078;
+  border: 1px solid #2B6078;
+  &:hover { background: #2B6078; color: white; }
 `
 
 // Wrapper do dropdown do usuário
@@ -72,7 +72,7 @@ const userBtnStyles = css`
   padding: 0.4rem 0.9rem;
   border-radius: 20px;
   font-family: sans-serif;
-  color: #1a2e1a;
+  color: #1A3038;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -92,7 +92,7 @@ const dropdownStyles = css`
   top: calc(100% + 10px);
   right: 0;
   background: white;
-  border: 1px solid #d0e8d0;
+  border: 1px solid #C0D8E8;
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.12);
   min-width: 200px;
@@ -102,13 +102,13 @@ const dropdownStyles = css`
 
 const dropdownHeaderStyles = css`
   padding: 12px 16px;
-  border-bottom: 1px solid #e8f5e8;
-  background: #f4faf4;
+  border-bottom: 1px solid #E0F5F3;
+  background: #F3F8F8;
 `
 
 const dropdownEmailStyles = css`
   font-size: 12px;
-  color: #4a6e4a;
+  color: #5A7A80;
   font-family: sans-serif;
   word-break: break-all;
 `
@@ -124,15 +124,15 @@ const dropdownItemStyles = css`
   cursor: pointer;
   font-size: 13px;
   font-family: sans-serif;
-  color: #1a2e1a;
+  color: #1A3038;
   text-align: left;
   transition: background 0.15s;
-  &:hover { background: #f4faf4; }
+  &:hover { background: #F3F8F8; }
 `
 
 const dropdownDividerStyles = css`
   height: 1px;
-  background: #e8f5e8;
+  background: #E0F5F3;
   margin: 4px 0;
 `
 
@@ -197,6 +197,9 @@ export const Header = () => {
                     <>
                       <button css={dropdownItemStyles} onClick={() => handleNav('/perfil')}>
                         👤 Meu perfil
+                      </button>
+                      <button css={dropdownItemStyles} onClick={() => handleNav('/sugerir')}>
+                        + Sugerir estabelecimento
                       </button>
                       <div css={dropdownDividerStyles} />
                     </>

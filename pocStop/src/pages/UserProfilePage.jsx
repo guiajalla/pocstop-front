@@ -52,14 +52,14 @@ const MOCK_AVALIACOES = [
 ]
 
 const STATUS_CONFIG = {
-  publicada: { label: 'Publicada', bg: '#e8f5e9', color: '#2e7d32', border: '#a5d6a7' },
+  publicada: { label: 'Publicada', bg: '#E0F5F3', color: '#006847', border: '#A0D5D0' },
   editada:   { label: 'Editada',   bg: '#fffde7', color: '#f57f17', border: '#ffe082' },
   pendente:  { label: 'Pendente',  bg: '#fff3e0', color: '#e65100', border: '#ffcc80' },
 }
 
 // ─── Styles ──────────────────────────────────────────────────────────────────
 const pageWrapper = css`
-  background: #f4faf4;
+  background: #F3F8F8;
   min-height: calc(100vh - 80px);
   padding: 32px 24px;
   font-family: 'DM Sans', sans-serif;
@@ -98,7 +98,7 @@ const avatarCircle = css`
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  background: #1b2e1b;
+  background: #1A3038;
   color: white;
   font-size: 22px;
   font-weight: 700;
@@ -112,13 +112,13 @@ const avatarCircle = css`
 const userNameStyle = css`
   font-size: 16px;
   font-weight: 700;
-  color: #1b2e1b;
+  color: #1A3038;
   margin: 0 0 2px;
 `
 
 const userCityStyle = css`
   font-size: 13px;
-  color: #6a8f6a;
+  color: #5A7A80;
   margin: 0;
 `
 
@@ -131,7 +131,7 @@ const sidebarStatsList = css`
   gap: 8px;
   li {
     font-size: 13px;
-    color: #4a6e4a;
+    color: #5A7A80;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -140,7 +140,7 @@ const sidebarStatsList = css`
 
 const editarPerfilBtn = css`
   width: 100%;
-  background: #1b2e1b;
+  background: #006847;
   color: white;
   border: none;
   border-radius: 8px;
@@ -157,8 +157,8 @@ const editarPerfilBtn = css`
 const verSalvosBtn = css`
   width: 100%;
   background: transparent;
-  color: #1b2e1b;
-  border: 1.5px solid #c8e6c9;
+  color: #1A3038;
+  border: 1.5px solid #C2DFE0;
   border-radius: 8px;
   padding: 10px;
   font-family: 'DM Sans', sans-serif;
@@ -167,42 +167,42 @@ const verSalvosBtn = css`
   cursor: pointer;
   margin-bottom: 24px;
   transition: background 0.2s;
-  &:hover { background: #f4faf4; }
+  &:hover { background: #F3F8F8; }
 `
 
 const filtrosDivider = css`
   height: 1px;
-  background: #e8f5e8;
+  background: #E0F5F3;
   margin-bottom: 16px;
 `
 
 const filtrosTitulo = css`
   font-size: 13px;
   font-weight: 700;
-  color: #1b2e1b;
+  color: #1A3038;
   margin: 0 0 4px;
 `
 
 const filtrosSubtitulo = css`
   font-size: 12px;
-  color: #6a8f6a;
+  color: #5A7A80;
   margin: 0 0 14px;
 `
 
 const filtroSelect = css`
   width: 100%;
-  background: #f4faf4;
-  border: 1px solid #c8e6c9;
+  background: #F3F8F8;
+  border: 1px solid #C2DFE0;
   border-radius: 6px;
   padding: 9px 12px;
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
-  color: #1b2e1b;
+  color: #1A3038;
   outline: none;
   appearance: none;
   cursor: pointer;
   margin-bottom: 10px;
-  &:focus { border-color: #4caf50; }
+  &:focus { border-color: #3AAFA9; }
 `
 
 const mainContent = css`
@@ -228,13 +228,13 @@ const statCard = css`
   gap: 6px;
   span {
     font-size: 12px;
-    color: #6a8f6a;
+    color: #5A7A80;
     font-weight: 500;
   }
   strong {
     font-size: 30px;
     font-weight: 700;
-    color: #1b2e1b;
+    color: #1A3038;
     line-height: 1;
   }
 `
@@ -248,7 +248,7 @@ const reviewsPanel = css`
 
 const reviewsHeader = css`
   padding: 20px 20px 16px;
-  border-bottom: 1px solid #e8f5e8;
+  border-bottom: 1px solid #E0F5F3;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -259,13 +259,13 @@ const reviewsHeader = css`
 const reviewsTitle = css`
   font-size: 16px;
   font-weight: 700;
-  color: #1b2e1b;
+  color: #1A3038;
   margin: 0 0 4px;
 `
 
 const reviewsSubtitle = css`
   font-size: 12px;
-  color: #6a8f6a;
+  color: #5A7A80;
   margin: 0;
 `
 
@@ -277,36 +277,36 @@ const reviewsControls = css`
 `
 
 const searchInput = css`
-  background: #f4faf4;
-  border: 1px solid #c8e6c9;
+  background: #F3F8F8;
+  border: 1px solid #C2DFE0;
   border-radius: 6px;
   padding: 8px 12px;
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
-  color: #1b2e1b;
+  color: #1A3038;
   outline: none;
   width: 200px;
-  &:focus { border-color: #4caf50; background: white; }
-  &::placeholder { color: #a5c8a5; }
+  &:focus { border-color: #3AAFA9; background: white; }
+  &::placeholder { color: #9ABFC2; }
 `
 
 const maisRecentesBtn = css`
   background: white;
-  border: 1.5px solid #c8e6c9;
+  border: 1.5px solid #C2DFE0;
   border-radius: 6px;
   padding: 8px 14px;
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
   font-weight: 500;
-  color: #1b2e1b;
+  color: #1A3038;
   cursor: pointer;
   white-space: nowrap;
-  &:hover { background: #f4faf4; }
+  &:hover { background: #F3F8F8; }
 `
 
 const reviewCard = css`
   padding: 18px 20px;
-  border-bottom: 1px solid #f0f7f0;
+  border-bottom: 1px solid #EBF5F5;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -331,7 +331,7 @@ const reviewTopRow = css`
 const reviewNome = css`
   font-size: 14px;
   font-weight: 700;
-  color: #1b2e1b;
+  color: #1A3038;
 `
 
 const statusBadge = (status) => {
@@ -358,20 +358,20 @@ const reviewNota = css`
 
 const reviewCategoria = css`
   font-size: 12px;
-  color: #6a8f6a;
+  color: #5A7A80;
   margin-bottom: 8px;
 `
 
 const reviewTexto = css`
   font-size: 13px;
-  color: #3a4e3a;
+  color: #3A4E54;
   line-height: 1.5;
   margin-bottom: 6px;
 `
 
 const reviewData = css`
   font-size: 11px;
-  color: #9ab99a;
+  color: #9ABFC2;
 `
 
 const reviewRight = css`
@@ -383,7 +383,7 @@ const reviewRight = css`
 `
 
 const editarAvaliacaoBtn = css`
-  background: #1b2e1b;
+  background: #006847;
   color: white;
   border: none;
   border-radius: 6px;
@@ -399,8 +399,8 @@ const editarAvaliacaoBtn = css`
 
 const verLocalBtn = css`
   background: white;
-  color: #1b2e1b;
-  border: 1.5px solid #c8e6c9;
+  color: #1A3038;
+  border: 1.5px solid #C2DFE0;
   border-radius: 6px;
   padding: 7px 14px;
   font-family: 'DM Sans', sans-serif;
@@ -408,7 +408,7 @@ const verLocalBtn = css`
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
-  &:hover { background: #f4faf4; }
+  &:hover { background: #F3F8F8; }
 `
 
 const excluirBtn = css`
@@ -451,11 +451,11 @@ const modalHeaderStyles = css`
   justify-content: space-between;
   align-items: center;
   padding: 20px 24px 16px;
-  border-bottom: 1px solid #e8f5e8;
+  border-bottom: 1px solid #E0F5F3;
   h2 {
     font-size: 16px;
     font-weight: 700;
-    color: #1b2e1b;
+    color: #1A3038;
     margin: 0;
     font-family: 'DM Sans', sans-serif;
   }
@@ -465,12 +465,12 @@ const modalCloseBtn = css`
   background: none;
   border: none;
   font-size: 18px;
-  color: #6a8f6a;
+  color: #5A7A80;
   cursor: pointer;
   padding: 2px 6px;
   border-radius: 4px;
   line-height: 1;
-  &:hover { background: #f4faf4; color: #1b2e1b; }
+  &:hover { background: #F3F8F8; color: #1A3038; }
 `
 
 const modalBody = css`
@@ -485,30 +485,30 @@ const fieldStyles = css`
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #6a8f6a;
+    color: #5A7A80;
     margin-bottom: 6px;
     font-family: 'DM Sans', sans-serif;
   }
   input, select {
     width: 100%;
-    background: #f4faf4;
-    border: 1px solid #c8e6c9;
+    background: #F3F8F8;
+    border: 1px solid #C2DFE0;
     border-radius: 6px;
     padding: 10px 13px;
     font-family: 'DM Sans', sans-serif;
     font-size: 14px;
-    color: #1b2e1b;
+    color: #1A3038;
     outline: none;
     appearance: none;
     transition: border-color 0.2s;
-    &:focus { border-color: #4caf50; background: white; }
-    &::placeholder { color: #a5c8a5; }
+    &:focus { border-color: #3AAFA9; background: white; }
+    &::placeholder { color: #9ABFC2; }
     option { background: white; }
     &:disabled {
-      background: #edf2ed;
-      color: #8aaa8a;
+      background: #EDF5F5;
+      color: #8AAAA0;
       cursor: not-allowed;
-      border-color: #dce8dc;
+      border-color: #C2DFE0;
     }
   }
 `
@@ -522,7 +522,7 @@ const rowStyles = css`
 
 const modalSubmitBtn = css`
   width: 100%;
-  background: #1b2e1b;
+  background: #006847;
   color: white;
   border: none;
   border-radius: 8px;
@@ -549,12 +549,12 @@ const modalErrorStyles = css`
 `
 
 const modalSuccessStyles = css`
-  background: rgba(46,125,50,0.08);
-  border: 1px solid rgba(46,125,50,0.25);
+  background: rgba(0,104,71,0.08);
+  border: 1px solid rgba(0,104,71,0.25);
   border-radius: 6px;
   padding: 12px;
   font-size: 14px;
-  color: #2e7d32;
+  color: #006847;
   text-align: center;
   font-family: 'DM Sans', sans-serif;
 `
