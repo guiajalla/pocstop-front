@@ -55,7 +55,6 @@ export const RegisterForm = () => {
     return (
       <ConfirmForm
         email={form.email}
-        password={form.password}
         userId={pendingUserId}
         dadosDemograficos={{
           nome:             form.nome,

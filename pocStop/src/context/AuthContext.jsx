@@ -1,7 +1,7 @@
 // src/context/AuthContext.jsx
 import { createContext, useContext, useState, useEffect } from 'react'
 import { Amplify } from 'aws-amplify'
-import { signIn, signOut, signUp, confirmSignUp, resendSignUpCode, getCurrentUser, deleteUser } from 'aws-amplify/auth'
+import { signIn, signOut, signUp, confirmSignUp, resendSignUpCode, getCurrentUser } from 'aws-amplify/auth'
 import { buscarDadosUsuario, atualizarDadosUsuario } from '../services/api'
 
 Amplify.configure({
@@ -78,15 +78,6 @@ export const AuthProvider = ({ children }) => {
     return resendSignUpCode({ username: email })
   }
 
-  const rollbackRegister = async (email, password) => {
-    try {
-      await signIn({ username: email, password })
-      await deleteUser()
-    } catch (e) {
-      console.error('Erro no rollback do Cognito:', e)
-    }
-  }
-
   const atualizarPerfil = async (dados) => {
     await atualizarDadosUsuario(user.userId, dados)
     const atualizado = {
@@ -114,7 +105,7 @@ export const AuthProvider = ({ children }) => {
   const isAdmin = perfil?.user_type === 'poc_admin'
 
   return (
-    <AuthContext.Provider value={{ user, perfil, loading, isAdmin, login, register, confirm, resendCode, rollbackRegister, logout, atualizarPerfil }}>
+    <AuthContext.Provider value={{ user, perfil, loading, isAdmin, login, register, confirm, resendCode, logout, atualizarPerfil }}>
       {children}
     </AuthContext.Provider>
   )
