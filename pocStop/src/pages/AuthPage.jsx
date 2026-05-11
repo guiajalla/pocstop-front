@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { Global } from '@emotion/react'
-import { globalStyles, pageStyles, cardStyles, tabBarStyles, tabStyles, formBodyStyles } from '../components/auth/authStyles'
+import { pageStyles, cardStyles, tabBarStyles, tabStyles, formBodyStyles } from '../components/auth/authStyles'
 import { LoginForm } from '../components/auth/LoginForm'
 import { RegisterForm } from '../components/auth/RegisterForm'
 
@@ -8,7 +7,6 @@ export const AuthPage = () => {
   const [tab, setTab] = useState('login')
   return (
     <>
-      <Global styles={globalStyles} />
       <div css={pageStyles}>
         <div css={cardStyles}>
           <div css={tabBarStyles}>

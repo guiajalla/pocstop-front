@@ -93,6 +93,7 @@ export const AuthProvider = ({ children }) => {
       ...perfil,
       name:               dados.nome,
       city:               dados.cidade,
+      state:              dados.estado,
       gender:             dados.genero,
       sexual_orientation: dados.orientacaoSexual,
       birth_date:         dados.dataNascimento,

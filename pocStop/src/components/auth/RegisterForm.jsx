@@ -6,7 +6,7 @@ import {
 } from './authStyles'
 import { PasswordInput } from './PasswordInput'
 import { ConfirmForm } from './ConfirmForm'
-import { DatePicker } from './DatePicker'
+import { DatePicker } from '../common/DatePicker'
 import { GENEROS, ORIENTACOES, ESTADOS_BR, checkPassword } from './authConstants'
 
 const ERROR_MSGS = {
