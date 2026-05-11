@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { Global, css } from '@emotion/react'
 import { AuthProvider } from './context/AuthContext'
 import { AdminEstabelecimentosPage } from './pages/EstablishmentsAdmin'
 import { UserProfilePage } from './pages/UserProfilePage'
@@ -9,7 +10,7 @@ import { HomePage } from './pages/HomePage'
 import { AuthPage } from './pages/AuthPage'
 import { AdminRoute } from './routes/AdminRoute'
 import { UserRoute } from './routes/UserRoute'
-import { css } from '@emotion/react'
+import { globalStyles } from './components/auth/authStyles'
 
 const AppStyles = css`
   display: flex;
@@ -21,6 +22,7 @@ const AppStyles = css`
 const App = () => {
   return (
     <AuthProvider>
+      <Global styles={globalStyles} />
       <BrowserRouter>
         <div css={AppStyles}>
           <Header />
