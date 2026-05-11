@@ -14,7 +14,7 @@ const req = async (path, options = {}) => {
   return data
 }
 
-export const salvarDadosUsuario = ({ userId, nome, dataNascimento, cidade, genero, orientacaoSexual }) => {
+export const salvarDadosUsuario = ({ userId, nome, dataNascimento, cidade, genero, orientacaoSexual, estado }) => {S
   const agora = new Date().toISOString()
   return req('/usuarios', {
     method: 'POST',
@@ -22,6 +22,7 @@ export const salvarDadosUsuario = ({ userId, nome, dataNascimento, cidade, gener
       userId,
       name:               nome,
       gender:             genero,
+      state:              estado,
       city:               cidade,
       sexual_orientation: orientacaoSexual,
       birth_date:         dataNascimento,

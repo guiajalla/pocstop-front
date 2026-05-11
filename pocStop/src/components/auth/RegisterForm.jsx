@@ -6,7 +6,8 @@ import {
 } from './authStyles'
 import { PasswordInput } from './PasswordInput'
 import { ConfirmForm } from './ConfirmForm'
-import { GENEROS, ORIENTACOES, checkPassword } from './authConstants'
+import { DatePicker } from './DatePicker'
+import { GENEROS, ORIENTACOES, ESTADOS_BR, checkPassword } from './authConstants'
 
 const ERROR_MSGS = {
   UsernameExistsException:   'Este e-mail já está cadastrado.',
@@ -16,7 +17,7 @@ const ERROR_MSGS = {
 
 const INITIAL_FORM = {
   nome: '', email: '', password: '', confirmPassword: '',
-  dataNascimento: '', cidade: '', genero: '', orientacaoSexual: '',
+  dataNascimento: '', cidade: '', estado: '', genero: '', orientacaoSexual: '',
 }
 
 export const RegisterForm = () => {
@@ -28,6 +29,7 @@ export const RegisterForm = () => {
   const [loading, setLoading] = useState(false)
 
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }))
+  const setVal = (field) => (val) => setForm((f) => ({ ...f, [field]: val }))
   const rules = checkPassword(form.password)
   const allRulesOk = Object.values(rules).every(Boolean)
 
@@ -36,6 +38,7 @@ export const RegisterForm = () => {
     setError('')
     if (form.password !== form.confirmPassword) return setError('As senhas não coincidem.')
     if (!allRulesOk) return setError('A senha não atende a todos os requisitos.')
+    if (!form.dataNascimento) return setError('Selecione sua data de nascimento.')
     setLoading(true)
     try {
       const result = await register(form.email, form.password)
@@ -58,6 +61,7 @@ export const RegisterForm = () => {
           nome:             form.nome,
           dataNascimento:   form.dataNascimento,
           cidade:           form.cidade,
+          estado:           form.estado,
           genero:           form.genero,
           orientacaoSexual: form.orientacaoSexual,
         }}
@@ -120,16 +124,22 @@ export const RegisterForm = () => {
 
       <div css={sectionTitleStyles}>Informações pessoais</div>
 
+      <div css={fieldStyles}>
+        <label>Data de nascimento</label>
+        <DatePicker value={form.dataNascimento} onChange={setVal('dataNascimento')} />
+      </div>
       <div css={rowStyles}>
-        <div css={fieldStyles}>
-          <label>Data de nascimento</label>
-          <input type="date" value={form.dataNascimento}
-            onChange={set('dataNascimento')} required />
-        </div>
         <div css={fieldStyles}>
           <label>Cidade</label>
           <input type="text" placeholder="São Paulo"
             value={form.cidade} onChange={set('cidade')} required />
+        </div>
+        <div css={fieldStyles}>
+          <label>Estado</label>
+          <select value={form.estado} onChange={set('estado')} required>
+            <option value="">Selecione...</option>
+            {ESTADOS_BR.map((uf) => <option key={uf} value={uf}>{uf}</option>)}
+          </select>
         </div>
       </div>
       <div css={rowStyles}>
