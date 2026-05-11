@@ -36,12 +36,13 @@ export const salvarDadosUsuario = ({ userId, nome, dataNascimento, cidade, gener
 export const buscarDadosUsuario = (userId) =>
   req(`/usuarios/${userId}`, { method: 'GET' })
 
-export const atualizarDadosUsuario = (userId, { nome, dataNascimento, cidade, genero, orientacaoSexual }) =>
+export const atualizarDadosUsuario = (userId, { nome, dataNascimento, cidade, estado, genero, orientacaoSexual }) =>
   req(`/usuarios/${userId}`, {
     method: 'PUT',
     body: JSON.stringify({
       name:               nome,
       gender:             genero,
+      state:              estado,
       city:               cidade,
       sexual_orientation: orientacaoSexual,
       birth_date:         dataNascimento,

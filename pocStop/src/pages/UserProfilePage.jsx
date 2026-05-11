@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { css } from '@emotion/react'
 import { useAuth } from '../context/AuthContext'
-import { GENEROS, ORIENTACOES } from '../components/auth/authConstants'
+import { GENEROS, ORIENTACOES, ESTADOS_BR } from '../components/auth/authConstants'
 
 // ─── Mock data ───────────────────────────────────────────────────────────────
 const MOCK_AVALIACOES = [
@@ -566,6 +566,7 @@ const EditarPerfilModal = ({ onClose }) => {
   const [form, setForm] = useState({
     nome:             perfil?.name               || '',
     cidade:           perfil?.city               || '',
+    estado:           perfil?.state              || '',
     dataNascimento:   perfil?.birth_date          || '',
     genero:           perfil?.gender              || '',
     orientacaoSexual: perfil?.sexual_orientation  || '',
@@ -631,15 +632,30 @@ const EditarPerfilModal = ({ onClose }) => {
                   />
                 </div>
                 <div css={fieldStyles}>
-                  <label htmlFor="dataNascimento">Data de nascimento</label>
-                  <input
-                    id="dataNascimento"
-                    name="dataNascimento"
-                    type="date"
-                    value={form.dataNascimento}
-                    disabled
-                  />
+                  <label htmlFor="estado">Estado</label>
+                  <select
+                    id="estado"
+                    name="estado"
+                    value={form.estado}
+                    onChange={handleChange}
+                  >
+                    <option value="">Selecione</option>
+                    {ESTADOS_BR.map(uf => (
+                      <option key={uf} value={uf}>{uf}</option>
+                    ))}
+                  </select>
                 </div>
+              </div>
+
+              <div css={fieldStyles}>
+                <label htmlFor="dataNascimento">Data de nascimento</label>
+                <input
+                  id="dataNascimento"
+                  name="dataNascimento"
+                  type="date"
+                  value={form.dataNascimento}
+                  disabled
+                />
               </div>
 
               <div css={rowStyles}>
