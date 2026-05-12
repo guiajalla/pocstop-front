@@ -14,7 +14,15 @@ const headerContainer = css`
   img {
     margin-left: 1rem;
     height: 5rem;
+    max-width: 40vw;
+    object-fit: contain;
     cursor: pointer;
+  }
+  @media (max-width: 480px) {
+    img {
+      height: 3rem;
+      max-width: 35vw;
+    }
   }
 `
 
@@ -23,6 +31,7 @@ const headerButtons = css`
   margin-right: 1rem;
   align-items: center;
   gap: 0.5rem;
+  flex-shrink: 0;
 `
 
 const btnStyles = css`
@@ -48,6 +57,9 @@ const explorarBtnStyles = css`
   color: #1A3038;
   transition: background 0.2s;
   &:hover { background: rgba(0,0,0,0.08); }
+  @media (max-width: 480px) {
+    display: none;
+  }
 `
 
 const adminBtnStyles = css`
