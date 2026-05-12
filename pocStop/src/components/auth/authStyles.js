@@ -1,9 +1,9 @@
 import { css } from '@emotion/react'
 
 export const globalStyles = css`
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root { --radius: 6px; --error: #c0392b; --success: #006847; }
+  body { font-family: 'DM Sans', sans-serif; }
 `
 
 export const pageStyles = css`
