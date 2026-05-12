@@ -63,6 +63,7 @@ const pageWrapper = css`
   min-height: calc(100vh - 80px);
   padding: 32px 24px;
   font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
 `
 
 const layout = css`
@@ -274,6 +275,10 @@ const reviewsControls = css`
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
+  @media (max-width: 640px) {
+    width: 100%;
+    flex-shrink: 1;
+  }
 `
 
 const searchInput = css`
@@ -286,6 +291,7 @@ const searchInput = css`
   color: #1A3038;
   outline: none;
   width: 200px;
+  @media (max-width: 640px) { flex: 1; width: auto; min-width: 0; }
   &:focus { border-color: #3AAFA9; background: white; }
   &::placeholder { color: #9ABFC2; }
 `
