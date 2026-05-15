@@ -50,7 +50,7 @@ export const atualizarDadosUsuario = (userId, { nome, dataNascimento, cidade, es
     }),
   })
 
-export const sugerirEstabelecimento = ({ nome, redeSocial, cidade, estado, sugeridoPor }) =>
+export const sugerirEstabelecimento = ({ nome, redeSocial, cidade, estado, sugeridoPor, categoriaPrincipal, categoriaSecundaria }) =>
   req('/estabelecimentos/sugerir', {
     method: 'POST',
     body: JSON.stringify({
@@ -59,6 +59,8 @@ export const sugerirEstabelecimento = ({ nome, redeSocial, cidade, estado, suger
       cidade,
       estado,
       sugerido_por: sugeridoPor,
+      categoria_principal: categoriaPrincipal,
+      categoria_secundaria: categoriaSecundaria || null,
     }),
   })
 

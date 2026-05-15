@@ -1,7 +1,7 @@
 export const CATEGORIAS = [
   'Bar', 'Restaurante', 'Cafeteria', 'Boate / Club', 'Espaço Cultural',
   'Drag Show', 'Hotel / Hospedagem', 'Salão de Beleza', 'Clínica / Saúde', 'Loja',
-  'Academia', 'Livraria', 'Outro',
+  'Academia', 'Sauna', 'Livraria', 'Outro',
 ]
 
 export const ESTADOS_BR = [
