@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { css } from '@emotion/react'
 import { useAuth } from '../context/AuthContext'
 import { sugerirEstabelecimento } from '../services/api'
-import { ESTADOS_BR } from '../components/establishments/establishmentConstants'
+import { ESTADOS_BR, CATEGORIAS } from '../components/establishments/establishmentConstants'
 
 const pageStyles = css`
   min-height: 60vh;
@@ -100,7 +100,7 @@ const alertStyles = (tipo) => css`
   border: 1px solid ${tipo === 'ok' ? '#3AAFA9' : '#fca5a5'};
 `
 
-const emptyForm = () => ({ nome: '', redeSocial: '', cidade: '', estado: '' })
+const emptyForm = () => ({ nome: '', redeSocial: '', cidade: '', estado: '', categoriaPrincipal: '', categoriaSecundaria: '' })
 
 export const SugestaoEstabelecimentoPage = () => {
   const { user } = useAuth()
@@ -113,7 +113,7 @@ export const SugestaoEstabelecimentoPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!form.nome.trim() || !form.redeSocial.trim() || !form.cidade.trim() || !form.estado) {
+    if (!form.nome.trim() || !form.redeSocial.trim() || !form.cidade.trim() || !form.estado || !form.categoriaPrincipal) {
       setFeedback({ msg: 'Preencha todos os campos obrigatórios.', tipo: 'erro' })
       return
     }
@@ -122,11 +122,13 @@ export const SugestaoEstabelecimentoPage = () => {
     setFeedback(null)
     try {
       await sugerirEstabelecimento({
-        nome:       form.nome.trim(),
-        redeSocial: form.redeSocial.trim(),
-        cidade:     form.cidade.trim(),
-        estado:     form.estado,
-        sugeridoPor: user?.userId || '',
+        nome:                form.nome.trim(),
+        redeSocial:          form.redeSocial.trim(),
+        cidade:              form.cidade.trim(),
+        estado:              form.estado,
+        sugeridoPor:         user?.userId || '',
+        categoriaPrincipal:  form.categoriaPrincipal,
+        categoriaSecundaria: form.categoriaSecundaria || undefined,
       })
       setEnviado(true)
     } catch (err) {
@@ -187,6 +189,22 @@ export const SugestaoEstabelecimentoPage = () => {
               value={form.redeSocial}
               onChange={set('redeSocial')}
             />
+          </div>
+
+          <div css={fieldGroupStyles}>
+            <label>Categoria principal *</label>
+            <select value={form.categoriaPrincipal} onChange={set('categoriaPrincipal')}>
+              <option value="">Selecionar</option>
+              {CATEGORIAS.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
+
+          <div css={fieldGroupStyles}>
+            <label>Categoria secundária <span style={{ fontWeight: 400, textTransform: 'none', fontSize: 11, color: '#9ABFC2' }}>(opcional)</span></label>
+            <select value={form.categoriaSecundaria} onChange={set('categoriaSecundaria')}>
+              <option value="">Nenhuma</option>
+              {CATEGORIAS.filter((c) => c !== form.categoriaPrincipal).map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
           </div>
 
           <div css={rowStyles}>
