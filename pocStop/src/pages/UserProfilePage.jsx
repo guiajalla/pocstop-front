@@ -615,7 +615,7 @@ const EditarPerfilModal = ({ onClose }) => {
               {erro && <div css={modalErrorStyles}>{erro}</div>}
 
               <div css={fieldStyles}>
-                <label htmlFor="nome">Nome completo</label>
+                <label htmlFor="nome">Nome</label>
                 <input
                   id="nome"
                   name="nome"
