@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { css } from '@emotion/react'
 import { useAuth } from '../context/AuthContext'
 import { GENEROS, ORIENTACOES, ESTADOS_BR } from '../components/auth/authConstants'
@@ -55,6 +55,68 @@ const STATUS_CONFIG = {
   publicada: { label: 'Publicada', bg: '#E0F5F3', color: '#006847', border: '#A0D5D0' },
   editada:   { label: 'Editada',   bg: '#fffde7', color: '#f57f17', border: '#ffe082' },
   pendente:  { label: 'Pendente',  bg: '#fff3e0', color: '#e65100', border: '#ffcc80' },
+}
+
+const MOCK_SUGESTOES = [
+  {
+    id: 1,
+    nome: 'Boteco do Galo',
+    tipo: 'Bar',
+    cidade: 'Porto Alegre',
+    bairro: 'Cidade Baixa',
+    status: 'aprovada',
+    dataSugerida: '20 Jan 2025',
+    observacao: 'Estabelecimento adicionado ao sistema com sucesso!',
+  },
+  {
+    id: 2,
+    nome: 'Sorveteria Polar',
+    tipo: 'Sorveteria',
+    cidade: 'Porto Alegre',
+    bairro: 'Navegantes',
+    status: 'em_analise',
+    dataSugerida: '05 Mar 2025',
+    observacao: null,
+  },
+  {
+    id: 3,
+    nome: "Pub O'Brien",
+    tipo: 'Pub',
+    cidade: 'Porto Alegre',
+    bairro: 'Moinhos de Vento',
+    status: 'recusada',
+    dataSugerida: '12 Fev 2025',
+    observacao: 'O estabelecimento não atende aos critérios de inclusão no momento.',
+  },
+  {
+    id: 4,
+    nome: 'Café Temperado',
+    tipo: 'Cafeteria',
+    cidade: 'Canoas',
+    bairro: 'Centro',
+    status: 'aguardando',
+    dataSugerida: '02 Abr 2025',
+    observacao: null,
+  },
+]
+
+const STATUS_SUGESTAO_CONFIG = {
+  aprovada:   { label: 'Aprovada',   bg: '#E0F5F3', color: '#006847', border: '#A0D5D0' },
+  em_analise: { label: 'Em análise', bg: '#E8F4FD', color: '#1565C0', border: '#90CAF9' },
+  recusada:   { label: 'Recusada',   bg: '#FEE2E2', color: '#c0392b', border: '#f5c6c6' },
+  aguardando: { label: 'Aguardando', bg: '#fff3e0', color: '#e65100', border: '#ffcc80' },
+}
+
+const getTimelineSteps = (status) => {
+  const labels = ['Sugerido', 'Em análise', 'Concluído']
+  let doneUntil = 0
+  if (status === 'em_analise') doneUntil = 1
+  else if (status === 'aprovada' || status === 'recusada') doneUntil = 2
+  return labels.map((label, i) => ({
+    label,
+    done: i < doneUntil,
+    active: i === doneUntil,
+  }))
 }
 
 // ─── Styles ──────────────────────────────────────────────────────────────────
@@ -431,6 +493,141 @@ const excluirBtn = css`
   &:hover { background: #fee2e2; }
 `
 
+// ─── Tab & suggestion styles ──────────────────────────────────────────────────
+const tabsNav = css`
+  display: flex;
+  background: white;
+  border-radius: 12px;
+  padding: 4px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  gap: 4px;
+`
+
+const tabBtn = (active) => css`
+  flex: 1;
+  padding: 10px 16px;
+  background: ${active ? '#1A3038' : 'transparent'};
+  border: none;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: ${active ? 'white' : '#5A7A80'};
+  cursor: pointer;
+  transition: all 0.18s;
+  &:hover {
+    background: ${active ? '#1A3038' : '#F3F8F8'};
+    color: ${active ? 'white' : '#1A3038'};
+  }
+`
+
+const sugestaoCard = css`
+  padding: 18px 20px;
+  border-bottom: 1px solid #EBF5F5;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  &:last-child { border-bottom: none; }
+`
+
+const sugestaoTop = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+`
+
+const sugestaoTopRow = css`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+`
+
+const statusSugestaoBadge = (status) => {
+  const c = STATUS_SUGESTAO_CONFIG[status] || STATUS_SUGESTAO_CONFIG.aguardando
+  return css`
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: ${c.bg};
+    color: ${c.color};
+    border: 1px solid ${c.border};
+  `
+}
+
+const timelineWrapper = css`
+  display: flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+`
+
+const timelineStepWrapper = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+`
+
+const timelineCircle = (done, active) => css`
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: ${done ? '12px' : '11px'};
+  font-weight: 700;
+  background: ${done ? '#006847' : active ? '#3AAFA9' : '#F3F8F8'};
+  color: ${done || active ? 'white' : '#9ABFC2'};
+  border: 2px solid ${done ? '#006847' : active ? '#3AAFA9' : '#C2DFE0'};
+`
+
+const timelineLabel = (done, active) => css`
+  font-size: 10px;
+  font-weight: ${active ? '700' : '500'};
+  color: ${done ? '#006847' : active ? '#3AAFA9' : '#9ABFC2'};
+  white-space: nowrap;
+`
+
+const timelineConnector = (done) => css`
+  width: 36px;
+  height: 2px;
+  background: ${done ? '#006847' : '#C2DFE0'};
+  margin-top: 13px;
+  flex-shrink: 0;
+`
+
+const obsBoxStyle = (status) => {
+  const cfg = {
+    aprovada: { bg: '#E0F5F3', border: '#A0D5D0', color: '#006847' },
+    recusada: { bg: '#FEE2E2', border: '#f5c6c6', color: '#c0392b' },
+  }
+  const c = cfg[status] || { bg: '#F3F8F8', border: '#C2DFE0', color: '#5A7A80' }
+  return css`
+    background: ${c.bg};
+    border: 1px solid ${c.border};
+    border-radius: 6px;
+    padding: 10px 13px;
+    font-size: 13px;
+    color: ${c.color};
+    line-height: 1.5;
+  `
+}
+
+const obsBoxNeutro = css`
+  background: #F3F8F8;
+  border: 1px solid #C2DFE0;
+  border-radius: 6px;
+  padding: 10px 13px;
+  font-size: 13px;
+  color: #5A7A80;
+  line-height: 1.5;
+`
+
 // ─── Modal styles ─────────────────────────────────────────────────────────────
 const overlayStyles = css`
   position: fixed;
@@ -710,6 +907,7 @@ const EditarPerfilModal = ({ onClose }) => {
 export const UserProfilePage = () => {
   const { perfil, user } = useAuth()
   const [editandoPerfil, setEditandoPerfil] = useState(false)
+  const [abaAtiva, setAbaAtiva] = useState('avaliacoes')
 
   const nome = perfil?.name || user?.signInDetails?.loginId || 'Usuário'
   const cidade = perfil?.city || '—'
@@ -719,6 +917,9 @@ export const UserProfilePage = () => {
     ? `${partes[0]} ${partes[partes.length - 1][0]}.`
     : partes[0]
   const inicial = partes[0]?.[0]?.toUpperCase() || 'U'
+
+  const sugestoesAprovadas = MOCK_SUGESTOES.filter(s => s.status === 'aprovada').length
+  const sugestoesEmAnalise = MOCK_SUGESTOES.filter(s => s.status === 'em_analise' || s.status === 'aguardando').length
 
   return (
     <div css={pageWrapper}>
@@ -736,94 +937,170 @@ export const UserProfilePage = () => {
           <ul css={sidebarStatsList}>
             <li>⭐ {MOCK_AVALIACOES.length} avaliações enviadas</li>
             <li>⭐ Nota média: 4.7</li>
+            <li>🏪 {MOCK_SUGESTOES.length} locais sugeridos</li>
             <li>📍 Contribuindo com a comunidade PocStop</li>
           </ul>
 
           <button css={editarPerfilBtn} onClick={() => setEditandoPerfil(true)}>
             Editar perfil
           </button>
-          <button css={verSalvosBtn}>
-            Ver locais salvos
-          </button>
-
-          <div css={filtrosDivider} />
-
-          <p css={filtrosTitulo}>Filtros</p>
-          <p css={filtrosSubtitulo}>Organize suas avaliações rapidamente</p>
-
-          <select css={filtroSelect} defaultValue="">
-            <option value="" disabled>Todas as notas</option>
-            <option>5 estrelas</option>
-            <option>4+ estrelas</option>
-            <option>3+ estrelas</option>
-          </select>
-          <select css={filtroSelect} defaultValue="">
-            <option value="" disabled>Todas as cidades</option>
-            <option>Porto Alegre</option>
-            <option>Canoas</option>
-          </select>
-          <select css={filtroSelect} defaultValue="">
-            <option value="" disabled>Todas as categorias</option>
-            <option>Bar</option>
-            <option>Restaurante</option>
-            <option>Cafeteria</option>
-          </select>
         </aside>
 
         {/* ── Main content ── */}
         <main css={mainContent}>
-          <div css={statsRow}>
-            <div css={statCard}>
-              <span>Total de avaliações</span>
-              <strong>18</strong>
-            </div>
-            <div css={statCard}>
-              <span>Média das suas notas</span>
-              <strong>4.7</strong>
-            </div>
-            <div css={statCard}>
-              <span>Locais avaliados</span>
-              <strong>14</strong>
-            </div>
+          {/* Tab navigation */}
+          <div css={tabsNav}>
+            <button
+              css={tabBtn(abaAtiva === 'avaliacoes')}
+              onClick={() => setAbaAtiva('avaliacoes')}
+            >
+              Minhas Avaliações
+            </button>
+            <button
+              css={tabBtn(abaAtiva === 'sugestoes')}
+              onClick={() => setAbaAtiva('sugestoes')}
+            >
+              Minhas Sugestões
+            </button>
           </div>
 
-          <div css={reviewsPanel}>
-            <div css={reviewsHeader}>
-              <div>
-                <p css={reviewsTitle}>Minhas avaliações</p>
-                <p css={reviewsSubtitle}>Veja, edite ou remova as reviews que você já publicou</p>
+          {abaAtiva === 'avaliacoes' ? (
+            <>
+              <div css={statsRow}>
+                <div css={statCard}>
+                  <span>Total de avaliações</span>
+                  <strong>18</strong>
+                </div>
+                <div css={statCard}>
+                  <span>Média das suas notas</span>
+                  <strong>4.7</strong>
+                </div>
+                <div css={statCard}>
+                  <span>Locais avaliados</span>
+                  <strong>14</strong>
+                </div>
               </div>
-              <div css={reviewsControls}>
-                <input css={searchInput} placeholder="Buscar por estabelecimento..." />
-                <button css={maisRecentesBtn}>Mais recentes</button>
-              </div>
-            </div>
 
-            {MOCK_AVALIACOES.map(av => (
-              <div key={av.id} css={reviewCard}>
-                <div css={reviewLeft}>
-                  <div css={reviewTopRow}>
-                    <span css={reviewNome}>{av.nome}</span>
-                    <span css={statusBadge(av.status)}>
-                      {STATUS_CONFIG[av.status]?.label}
-                    </span>
-                    <span css={reviewNota}>⭐ {av.nota.toFixed(1)}</span>
+              <div css={reviewsPanel}>
+                <div css={reviewsHeader}>
+                  <div>
+                    <p css={reviewsTitle}>Minhas avaliações</p>
+                    <p css={reviewsSubtitle}>Veja, edite ou remova as reviews que você já publicou</p>
                   </div>
-                  <p css={reviewCategoria}>
-                    {av.tipo} • {av.cidade} • {av.bairro}
-                  </p>
-                  <p css={reviewTexto}>{av.texto}</p>
-                  <p css={reviewData}>Avaliado em {av.data}</p>
+                  <div css={reviewsControls}>
+                    <input css={searchInput} placeholder="Buscar por estabelecimento..." />
+                    <button css={maisRecentesBtn}>Mais recentes</button>
+                  </div>
                 </div>
 
-                <div css={reviewRight}>
-                  <button css={editarAvaliacaoBtn}>Editar avaliação</button>
-                  <button css={verLocalBtn}>Ver local</button>
-                  <button css={excluirBtn}>Excluir</button>
+                {MOCK_AVALIACOES.map(av => (
+                  <div key={av.id} css={reviewCard}>
+                    <div css={reviewLeft}>
+                      <div css={reviewTopRow}>
+                        <span css={reviewNome}>{av.nome}</span>
+                        <span css={statusBadge(av.status)}>
+                          {STATUS_CONFIG[av.status]?.label}
+                        </span>
+                        <span css={reviewNota}>⭐ {av.nota.toFixed(1)}</span>
+                      </div>
+                      <p css={reviewCategoria}>
+                        {av.tipo} • {av.cidade} • {av.bairro}
+                      </p>
+                      <p css={reviewTexto}>{av.texto}</p>
+                      <p css={reviewData}>Avaliado em {av.data}</p>
+                    </div>
+
+                    <div css={reviewRight}>
+                      <button css={editarAvaliacaoBtn}>Editar avaliação</button>
+                      <button css={verLocalBtn}>Ver local</button>
+                      <button css={excluirBtn}>Excluir</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <div css={statsRow}>
+                <div css={statCard}>
+                  <span>Total de sugestões</span>
+                  <strong>{MOCK_SUGESTOES.length}</strong>
+                </div>
+                <div css={statCard}>
+                  <span>Aprovadas</span>
+                  <strong>{sugestoesAprovadas}</strong>
+                </div>
+                <div css={statCard}>
+                  <span>Em análise</span>
+                  <strong>{sugestoesEmAnalise}</strong>
                 </div>
               </div>
-            ))}
-          </div>
+
+              <div css={reviewsPanel}>
+                <div css={reviewsHeader}>
+                  <div>
+                    <p css={reviewsTitle}>Minhas sugestões</p>
+                    <p css={reviewsSubtitle}>Acompanhe o status dos estabelecimentos que você indicou</p>
+                  </div>
+                  <div css={reviewsControls}>
+                    <input css={searchInput} placeholder="Buscar sugestão..." />
+                    <button css={maisRecentesBtn}>Mais recentes</button>
+                  </div>
+                </div>
+
+                {MOCK_SUGESTOES.map(sg => (
+                  <div key={sg.id} css={sugestaoCard}>
+                    <div css={sugestaoTop}>
+                      <div>
+                        <div css={sugestaoTopRow}>
+                          <span css={reviewNome}>{sg.nome}</span>
+                          <span css={statusSugestaoBadge(sg.status)}>
+                            {STATUS_SUGESTAO_CONFIG[sg.status]?.label}
+                          </span>
+                        </div>
+                        <p css={reviewCategoria}>
+                          {sg.tipo} • {sg.cidade} • {sg.bairro}
+                        </p>
+                        <p css={reviewData}>Sugerido em {sg.dataSugerida}</p>
+                      </div>
+
+                      <div css={timelineWrapper}>
+                        {getTimelineSteps(sg.status).map((step, i, arr) => (
+                          <React.Fragment key={step.label}>
+                            <div css={timelineStepWrapper}>
+                              <div css={timelineCircle(step.done, step.active)}>
+                                {step.done ? '✓' : i + 1}
+                              </div>
+                              <span css={timelineLabel(step.done, step.active)}>
+                                {step.label}
+                              </span>
+                            </div>
+                            {i < arr.length - 1 && (
+                              <div css={timelineConnector(step.done)} />
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </div>
+                    </div>
+
+                    {sg.observacao ? (
+                      <div css={obsBoxStyle(sg.status)}>
+                        <strong>Retorno da equipe:</strong> {sg.observacao}
+                      </div>
+                    ) : sg.status === 'em_analise' ? (
+                      <div css={obsBoxNeutro}>
+                        Sua sugestão está sendo analisada pela nossa equipe. Em breve você terá um retorno.
+                      </div>
+                    ) : sg.status === 'aguardando' ? (
+                      <div css={obsBoxNeutro}>
+                        Sua sugestão foi recebida e está na fila de análise. Obrigado pela contribuição!
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
         </main>
       </div>
 
