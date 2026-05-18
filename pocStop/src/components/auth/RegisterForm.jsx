@@ -76,7 +76,10 @@ export const RegisterForm = () => {
       <div css={sectionTitleStyles}>Dados de acesso</div>
 
       <div css={fieldStyles}>
-        <label>Nome completo</label>
+        <label>Nome</label>
+        <span style={{ fontSize: 11, color: '#9ABFC2', marginTop: 4, display: 'block' }}>
+          Como você gostaria de ser chamado(a/e)
+        </span>
         <input type="text" placeholder="João Silva"
           value={form.nome} onChange={set('nome')} required />
       </div>
