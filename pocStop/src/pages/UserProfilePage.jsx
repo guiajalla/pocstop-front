@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { css } from '@emotion/react'
 import { useAuth } from '../context/AuthContext'
 import { GENEROS, ORIENTACOES, ESTADOS_BR } from '../components/auth/authConstants'
+import { useSugestoesUsuario } from '../hooks/useSugestoesUsuario'
 
 // ─── Mock data ───────────────────────────────────────────────────────────────
 const MOCK_AVALIACOES = [
@@ -57,48 +58,13 @@ const STATUS_CONFIG = {
   pendente:  { label: 'Pendente',  bg: '#fff3e0', color: '#e65100', border: '#ffcc80' },
 }
 
-const MOCK_SUGESTOES = [
-  {
-    id: 1,
-    nome: 'Boteco do Galo',
-    tipo: 'Bar',
-    cidade: 'Porto Alegre',
-    bairro: 'Cidade Baixa',
-    status: 'aprovada',
-    dataSugerida: '20 Jan 2025',
-    observacao: 'Estabelecimento adicionado ao sistema com sucesso!',
-  },
-  {
-    id: 2,
-    nome: 'Sorveteria Polar',
-    tipo: 'Sorveteria',
-    cidade: 'Porto Alegre',
-    bairro: 'Navegantes',
-    status: 'em_analise',
-    dataSugerida: '05 Mar 2025',
-    observacao: null,
-  },
-  {
-    id: 3,
-    nome: "Pub O'Brien",
-    tipo: 'Pub',
-    cidade: 'Porto Alegre',
-    bairro: 'Moinhos de Vento',
-    status: 'recusada',
-    dataSugerida: '12 Fev 2025',
-    observacao: 'O estabelecimento não atende aos critérios de inclusão no momento.',
-  },
-  {
-    id: 4,
-    nome: 'Café Temperado',
-    tipo: 'Cafeteria',
-    cidade: 'Canoas',
-    bairro: 'Centro',
-    status: 'aguardando',
-    dataSugerida: '02 Abr 2025',
-    observacao: null,
-  },
-]
+const MESES_ABREV = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+
+const formatarData = (iso) => {
+  if (!iso) return '—'
+  const d = new Date(iso)
+  return `${d.getUTCDate()} ${MESES_ABREV[d.getUTCMonth()]} ${d.getUTCFullYear()}`
+}
 
 const STATUS_SUGESTAO_CONFIG = {
   aprovada:   { label: 'Aprovada',   bg: '#E0F5F3', color: '#006847', border: '#A0D5D0' },
@@ -908,6 +874,7 @@ export const UserProfilePage = () => {
   const { perfil, user } = useAuth()
   const [editandoPerfil, setEditandoPerfil] = useState(false)
   const [abaAtiva, setAbaAtiva] = useState('avaliacoes')
+  const { sugestoes, loading: loadingSugestoes, error: errorSugestoes, refresh: refreshSugestoes } = useSugestoesUsuario(user?.userId)
 
   const nome = perfil?.name || user?.signInDetails?.loginId || 'Usuário'
   const cidade = perfil?.city || '—'
@@ -918,8 +885,8 @@ export const UserProfilePage = () => {
     : partes[0]
   const inicial = partes[0]?.[0]?.toUpperCase() || 'U'
 
-  const sugestoesAprovadas = MOCK_SUGESTOES.filter(s => s.status === 'aprovada').length
-  const sugestoesEmAnalise = MOCK_SUGESTOES.filter(s => s.status === 'em_analise' || s.status === 'aguardando').length
+  const sugestoesAprovadas = sugestoes.filter(s => s.status === 'aprovada').length
+  const sugestoesEmAnalise = sugestoes.filter(s => s.status === 'em_analise' || s.status === 'aguardando').length
 
   return (
     <div css={pageWrapper}>
@@ -937,7 +904,7 @@ export const UserProfilePage = () => {
           <ul css={sidebarStatsList}>
             <li>⭐ {MOCK_AVALIACOES.length} avaliações enviadas</li>
             <li>⭐ Nota média: 4.7</li>
-            <li>🏪 {MOCK_SUGESTOES.length} locais sugeridos</li>
+            <li>🏪 {sugestoes.length} locais sugeridos</li>
             <li>📍 Contribuindo com a comunidade PocStop</li>
           </ul>
 
@@ -1024,15 +991,15 @@ export const UserProfilePage = () => {
               <div css={statsRow}>
                 <div css={statCard}>
                   <span>Total de sugestões</span>
-                  <strong>{MOCK_SUGESTOES.length}</strong>
+                  <strong>{loadingSugestoes ? '...' : sugestoes.length}</strong>
                 </div>
                 <div css={statCard}>
                   <span>Aprovadas</span>
-                  <strong>{sugestoesAprovadas}</strong>
+                  <strong>{loadingSugestoes ? '...' : sugestoesAprovadas}</strong>
                 </div>
                 <div css={statCard}>
                   <span>Em análise</span>
-                  <strong>{sugestoesEmAnalise}</strong>
+                  <strong>{loadingSugestoes ? '...' : sugestoesEmAnalise}</strong>
                 </div>
               </div>
 
@@ -1044,60 +1011,76 @@ export const UserProfilePage = () => {
                   </div>
                   <div css={reviewsControls}>
                     <input css={searchInput} placeholder="Buscar sugestão..." />
-                    <button css={maisRecentesBtn}>Mais recentes</button>
+                    <button css={maisRecentesBtn} onClick={refreshSugestoes} disabled={loadingSugestoes}>
+                      {loadingSugestoes ? 'Atualizando...' : 'Atualizar'}
+                    </button>
                   </div>
                 </div>
 
-                {MOCK_SUGESTOES.map(sg => (
-                  <div key={sg.id} css={sugestaoCard}>
-                    <div css={sugestaoTop}>
-                      <div>
-                        <div css={sugestaoTopRow}>
-                          <span css={reviewNome}>{sg.nome}</span>
-                          <span css={statusSugestaoBadge(sg.status)}>
-                            {STATUS_SUGESTAO_CONFIG[sg.status]?.label}
-                          </span>
-                        </div>
-                        <p css={reviewCategoria}>
-                          {sg.tipo} • {sg.cidade} • {sg.bairro}
-                        </p>
-                        <p css={reviewData}>Sugerido em {sg.dataSugerida}</p>
-                      </div>
-
-                      <div css={timelineWrapper}>
-                        {getTimelineSteps(sg.status).map((step, i, arr) => (
-                          <React.Fragment key={step.label}>
-                            <div css={timelineStepWrapper}>
-                              <div css={timelineCircle(step.done, step.active)}>
-                                {step.done ? '✓' : i + 1}
-                              </div>
-                              <span css={timelineLabel(step.done, step.active)}>
-                                {step.label}
-                              </span>
-                            </div>
-                            {i < arr.length - 1 && (
-                              <div css={timelineConnector(step.done)} />
-                            )}
-                          </React.Fragment>
-                        ))}
-                      </div>
-                    </div>
-
-                    {sg.observacao ? (
-                      <div css={obsBoxStyle(sg.status)}>
-                        <strong>Retorno da equipe:</strong> {sg.observacao}
-                      </div>
-                    ) : sg.status === 'em_analise' ? (
-                      <div css={obsBoxNeutro}>
-                        Sua sugestão está sendo analisada pela nossa equipe. Em breve você terá um retorno.
-                      </div>
-                    ) : sg.status === 'aguardando' ? (
-                      <div css={obsBoxNeutro}>
-                        Sua sugestão foi recebida e está na fila de análise. Obrigado pela contribuição!
-                      </div>
-                    ) : null}
+                {loadingSugestoes ? (
+                  <div style={{ padding: '40px 20px', textAlign: 'center', color: '#5A7A80', fontSize: 14 }}>
+                    Carregando suas sugestões...
                   </div>
-                ))}
+                ) : errorSugestoes ? (
+                  <div style={{ padding: '20px' }}>
+                    <div css={obsBoxNeutro}>{errorSugestoes}</div>
+                  </div>
+                ) : sugestoes.length === 0 ? (
+                  <div style={{ padding: '40px 20px', textAlign: 'center', color: '#5A7A80', fontSize: 14 }}>
+                    Você ainda não fez nenhuma sugestão.
+                  </div>
+                ) : (
+                  sugestoes.map(sg => (
+                    <div key={sg.estabelecimento_id} css={sugestaoCard}>
+                      <div css={sugestaoTop}>
+                        <div>
+                          <div css={sugestaoTopRow}>
+                            <span css={reviewNome}>{sg.nome}</span>
+                            <span css={statusSugestaoBadge(sg.status)}>
+                              {STATUS_SUGESTAO_CONFIG[sg.status]?.label}
+                            </span>
+                          </div>
+                          <p css={reviewCategoria}>
+                            {[sg.tipo, sg.cidade, sg.bairro].filter(Boolean).join(' • ')}
+                          </p>
+                          <p css={reviewData}>Sugerido em {formatarData(sg.created_at)}</p>
+                        </div>
+
+                        <div css={timelineWrapper}>
+                          {getTimelineSteps(sg.status).map((step, i, arr) => (
+                            <React.Fragment key={step.label}>
+                              <div css={timelineStepWrapper}>
+                                <div css={timelineCircle(step.done, step.active)}>
+                                  {step.done ? '✓' : i + 1}
+                                </div>
+                                <span css={timelineLabel(step.done, step.active)}>
+                                  {step.label}
+                                </span>
+                              </div>
+                              {i < arr.length - 1 && (
+                                <div css={timelineConnector(step.done)} />
+                              )}
+                            </React.Fragment>
+                          ))}
+                        </div>
+                      </div>
+
+                      {sg.observacao ? (
+                        <div css={obsBoxStyle(sg.status)}>
+                          <strong>Retorno da equipe:</strong> {sg.observacao}
+                        </div>
+                      ) : sg.status === 'em_analise' ? (
+                        <div css={obsBoxNeutro}>
+                          Sua sugestão está sendo analisada pela nossa equipe. Em breve você terá um retorno.
+                        </div>
+                      ) : sg.status === 'aguardando' ? (
+                        <div css={obsBoxNeutro}>
+                          Sua sugestão foi recebida e está na fila de análise. Obrigado pela contribuição!
+                        </div>
+                      ) : null}
+                    </div>
+                  ))
+                )}
               </div>
             </>
           )}

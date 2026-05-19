@@ -36,6 +36,11 @@ export const salvarDadosUsuario = ({ userId, nome, dataNascimento, cidade, gener
 export const buscarDadosUsuario = (userId) =>
   req(`/usuarios/${userId}`, { method: 'GET' })
 
+export const buscarSugestoesUsuario = (userId, checkOnly = false) => {
+  const qs = checkOnly ? '?check=true' : ''
+  return req(`/estabelecimentos/sugestoes/${userId}${qs}`, { method: 'GET' })
+}
+
 export const atualizarDadosUsuario = (userId, { nome, dataNascimento, cidade, estado, genero, orientacaoSexual }) =>
   req(`/usuarios/${userId}`, {
     method: 'PUT',
