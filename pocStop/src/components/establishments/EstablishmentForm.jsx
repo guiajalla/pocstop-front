@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   formPanelStyles, formHeaderStyles, formTitleStyles, formSubtitleStyles,
   formBodyFormStyles, formActionsStyles, fieldGroupStyles, rowFieldStyles,
@@ -9,8 +9,24 @@ import { CATEGORIAS, ESTADOS_BR, emptyForm } from './establishmentConstants'
 
 export const EstablishmentForm = ({ initialValues, isNovo, selecionado, saving, onSave }) => {
   const [form, setForm] = useState(initialValues ?? emptyForm())
+  const [showModalRejeitar, setShowModalRejeitar] = useState(false)
+  const [motivo, setMotivo] = useState('')
+
+  useEffect(() => {
+    setForm(initialValues ?? emptyForm())
+  }, [initialValues])
 
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }))
+
+  const abrirModalRejeitar = () => {
+    setMotivo(form.observacao || '')
+    setShowModalRejeitar(true)
+  }
+
+  const confirmarRejeicao = () => {
+    setShowModalRejeitar(false)
+    onSave('rejeitado', { ...form, observacao: motivo.trim() })
+  }
 
   if (!selecionado && !isNovo) {
     return (
@@ -26,6 +42,7 @@ export const EstablishmentForm = ({ initialValues, isNovo, selecionado, saving, 
   const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1)
 
   return (
+    <>
     <div css={formPanelStyles}>
       <div css={formHeaderStyles}>
         <div>
@@ -150,7 +167,7 @@ export const EstablishmentForm = ({ initialValues, isNovo, selecionado, saving, 
 
       <div css={formActionsStyles}>
         {!isNovo && selecionado?.status !== 'aprovado' && (
-          <button css={btnRejectStyles} disabled={saving} onClick={() => onSave('rejeitado', form)}>
+          <button css={btnRejectStyles} disabled={saving} onClick={abrirModalRejeitar}>
             Rejeitar
           </button>
         )}
@@ -162,5 +179,95 @@ export const EstablishmentForm = ({ initialValues, isNovo, selecionado, saving, 
         </button>
       </div>
     </div>
+
+      {showModalRejeitar && (
+        <div
+          style={{
+            position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            zIndex: 1000, padding: 24,
+          }}
+          onClick={() => setShowModalRejeitar(false)}
+        >
+          <div
+            style={{
+              background: 'white', borderRadius: 12, width: '100%', maxWidth: 440,
+              boxShadow: '0 8px 32px rgba(0,0,0,0.18)', overflow: 'hidden',
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div style={{
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+              padding: '18px 22px 14px', borderBottom: '1px solid #fee2e2',
+            }}>
+              <h2 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: '#1A3038', fontFamily: "'DM Sans', sans-serif" }}>
+                Motivo da recusa
+              </h2>
+              <button
+                onClick={() => setShowModalRejeitar(false)}
+                style={{
+                  background: 'none', border: 'none', fontSize: 18, color: '#5A7A80',
+                  cursor: 'pointer', padding: '2px 6px', borderRadius: 4, lineHeight: 1,
+                }}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div style={{ padding: '18px 22px 22px' }}>
+              <p style={{ margin: '0 0 12px', fontSize: 13, color: '#5A7A80', fontFamily: "'DM Sans', sans-serif" }}>
+                Informe o motivo para que o usuário entenda a decisão.
+              </p>
+              <textarea
+                autoFocus
+                placeholder="Ex: endereço não encontrado, perfil inativo..."
+                value={motivo}
+                onChange={e => setMotivo(e.target.value)}
+                maxLength={280}
+                rows={4}
+                style={{
+                  width: '100%', boxSizing: 'border-box',
+                  background: '#F3F8F8', border: '1px solid #C2DFE0',
+                  borderRadius: 6, padding: '9px 12px',
+                  fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: '#1A3038',
+                  outline: 'none', resize: 'vertical',
+                }}
+                onFocus={e => { e.target.style.borderColor = '#3AAFA9'; e.target.style.background = 'white' }}
+                onBlur={e => { e.target.style.borderColor = '#C2DFE0'; e.target.style.background = '#F3F8F8' }}
+              />
+              <span style={{ display: 'block', textAlign: 'right', fontSize: 11, color: '#9ABFC2', marginTop: 4, fontFamily: "'DM Sans', sans-serif" }}>
+                {280 - motivo.length}/280
+              </span>
+
+              <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
+                <button
+                  onClick={() => setShowModalRejeitar(false)}
+                  style={{
+                    flex: 1, background: 'white', color: '#1A3038',
+                    border: '1.5px solid #C2DFE0', borderRadius: 8, padding: '10px',
+                    fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 500, cursor: 'pointer',
+                  }}
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={confirmarRejeicao}
+                  disabled={!motivo.trim() || saving}
+                  style={{
+                    flex: 1, background: motivo.trim() ? '#b91c1c' : '#e5e7eb',
+                    color: motivo.trim() ? 'white' : '#9ca3af',
+                    border: 'none', borderRadius: 8, padding: '10px',
+                    fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 600,
+                    cursor: motivo.trim() ? 'pointer' : 'not-allowed', transition: 'background 0.15s',
+                  }}
+                >
+                  {saving ? 'Rejeitando...' : 'Confirmar recusa'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   )
 }

@@ -43,6 +43,11 @@ export const AdminEstabelecimentosPage = () => {
       return
     }
 
+    if (status === 'rejeitado' && !form.observacao?.trim()) {
+      mostrarFeedback('Informe o motivo da recusa antes de rejeitar.', 'erro')
+      return
+    }
+
     setSaving(true)
     try {
       const agora = new Date().toISOString()
@@ -61,6 +66,7 @@ export const AdminEstabelecimentosPage = () => {
         categoria_principal:  form.categoriaPrincipal  || '',
         categoria_secundaria: form.categoriaSecundaria || '',
         dono_lgbt:            form.donoLGBT,
+        observacao:           form.observacao?.trim() || '',
         status,
         atualizado_por:       user?.signInDetails?.loginId || user?.username || '',
         updated_at:           agora,
@@ -113,6 +119,7 @@ export const AdminEstabelecimentosPage = () => {
     categoriaPrincipal:  selecionado.categoria_principal || '',
     categoriaSecundaria: selecionado.categoria_secundaria || '',
     donoLGBT:            selecionado.dono_lgbt ?? false,
+    observacao:          selecionado.observacao || '',
   } : emptyForm()
 
   return (
