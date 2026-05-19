@@ -16,4 +16,5 @@ export const emptyForm = () => ({
   latitude: '', longitude: '',
   categoriaPrincipal: '', categoriaSecundaria: '',
   donoLGBT: false,
+  observacao: '',
 })
